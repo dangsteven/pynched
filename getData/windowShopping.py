@@ -5,10 +5,11 @@ import requests
 from bs4 import BeautifulSoup
 from amazon.api import AmazonAPI
 import time
+from credentials import *
 
-AMAZON_ACCESS_KEY = 'AKIAIZS67S2JYM7RGUAA'
-AMAZON_SECRET_KEY = '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'
-AMAZON_ASSOC_TAG = 'sddang'
+AMAZON_ACCESS_KEY = amazon_access_key
+AMAZON_SECRET_KEY = amazon_secret_key
+AMAZON_ASSOC_TAG = amazon_associate_tag
 
 asin_regex = r'/([A-Z0-9]{10})'
 isbn_regex = r'/([0-9]{10})'
