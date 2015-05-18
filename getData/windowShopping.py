@@ -1,38 +1,34 @@
 # #windowShopping will take all of the Amazon HTMLs from a data structure and will retrieve all of the used/new prices
-import re
+
 import json
 import requests
 from bs4 import BeautifulSoup
 from amazon.api import AmazonAPI
 import time
 from credentials import *
+import file_controls
+import datetime
 
 AMAZON_ACCESS_KEY = amazon_access_key
 AMAZON_SECRET_KEY = amazon_secret_key
 AMAZON_ASSOC_TAG = amazon_associate_tag
 
-asin_regex = r'/([A-Z0-9]{10})'
-isbn_regex = r'/([0-9]{10})'
+class smart_price():
+    def __init__ (self, new_price, used_price, trade_in):
+        self.new_price = new_price
+        self.used_price = used_price
+        self.trade_in = trade_in
 
-def get_amazon_item_id(url):
-    # return either ASIN or ISBN
-    asin_search = re.search(asin_regex, url)
-    isbn_search = re.search(isbn_regex, url)
-    if asin_search:
-        return asin_search.group(1)
-    elif isbn_search:
-        return isbn_search.group(1)
-    else:
-        # log this URL
-        return None
 
-def get_amazon_product_meta(url):
+def get_amazon_product_meta(book):
     # the input URL is always of amazon
     amazon = AmazonAPI(AMAZON_ACCESS_KEY, AMAZON_SECRET_KEY, AMAZON_ASSOC_TAG)
 
-    item_id = get_amazon_item_id(url)
-    if not item_id:
-        return None
+    # item_id = get_amazon_item_id(url)
+    # if not item_id:
+    #     return None
+
+    item_id = book.id
 
     try:
         product = amazon.lookup(ItemId=item_id)        
@@ -41,7 +37,6 @@ def get_amazon_product_meta(url):
         return None
     except Exception:
     	return None
-
 
     # product.price_and_currency returns in the form (price, currency)
 	# product_price = product.price_and_currency[0]
@@ -53,42 +48,26 @@ def get_amazon_product_meta(url):
     if new_price or used_price or trade_in_price:
         return new_price, used_price, trade_in_price
 
-    return Nonesting.Price.FormattedPrice
+    book[datetime.date.time()] = smart_price(new_price, used_price, trade_in)
+    # return Nonesting.Price.FormattedPrice
 
-def unpickle(fileName):
-	f = open(fileName, 'r')
-	HTML_Dict = json.load(f)
-	print(fileName)
-	f.close()
-
-	return HTML_Dict
-
-def pickle(structure,fileName):
-	f = open(fileName, 'w' )
-	json.dump(structure,f)
-	f.close()
-
-def get_prices(urls,newPricesDict, usedPricesDict, tradeInDict):
+def get_prices(books):
 	#iterates through document of book urls
-	for url in urls:
-		price = get_amazon_product_meta(urls[url])
-		newPricesDict[url] = price[0]
-		usedPricesDict[url] = price[1]
-		tradeInDict[url] = price[2]
+	for book in books:
+		get_amazon_product_meta(book)
 		time.sleep(1)
 		print(url)
 		print("\t" + str(price))
 
-
 def main():
-	newPrices = {}
-	usedPrices = {}
-	tradeInPrices = {}
-	urlDict = unpickle('addresses.dat')
-	get_prices(urlDict, newPrices, usedPrices, tradeInPrices)
-	pickle(newPrices, "newPrices.dat")
-	pickle(usedPrices, "usedPrices.dat")
-	pickle(tradeInPrices, "tradeInPrices.dat")
+	# newPrices = {}[href]
+	# usedPrices = {}
+	# tradeInPrices = {}
+	book_dicts = file_controls.load_from_file("addresses.dat")
+	get_prices(book_dicts)
+	# save_to_file(newPrices, "newPrices.dat")
+	# save_to_file(usedPrices, "usedPrices.dat")
+	# save_to_file(tradeInPrices, "tradeInPrices.dat")
 
 if __name__ == '__main__':
 	main()
