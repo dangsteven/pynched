@@ -1,0 +1,1 @@
+5 2 * * * /usr/bin/Python /Users/stevendang/Code/pynched/getData/windowShopping.py

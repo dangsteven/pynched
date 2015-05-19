@@ -58,7 +58,7 @@ def main():
 	# tradeInPrices = {}
 	book_dicts = file_controls.load_from_file("addresses.dat")
 	get_prices(book_dicts)
-	file_controls.save_to_file(book_dicts, "newPrices.dat")
+	file_controls.save_to_file(book_dicts, "oldPrices.dat")
 
 
 if __name__ == '__main__':
