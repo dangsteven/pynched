@@ -1,13 +1,11 @@
 # #windowShopping will take all of the Amazon HTMLs from a data structure and will retrieve all of the used/new prices
-
-import json
 import requests
 from bs4 import BeautifulSoup
 from amazon.api import AmazonAPI
 import time
 from credentials import *
 import file_controls
-import datetime
+from datetime import date
 
 AMAZON_ACCESS_KEY = amazon_access_key
 AMAZON_SECRET_KEY = amazon_secret_key
@@ -20,15 +18,15 @@ class smart_price():
         self.trade_in = trade_in
 
 
-def get_amazon_product_meta(book):
+def get_amazon_product_meta(books,book):
     # the input URL is always of amazon
     amazon = AmazonAPI(AMAZON_ACCESS_KEY, AMAZON_SECRET_KEY, AMAZON_ASSOC_TAG)
 
     # item_id = get_amazon_item_id(url)
     # if not item_id:
     #     return None
-
-    item_id = book.id
+    print("hello")
+    item_id = books[book]["id"]
 
     try:
         product = amazon.lookup(ItemId=item_id)        
@@ -46,28 +44,23 @@ def get_amazon_product_meta(book):
     trade_in_price = product._safe_get_element_text("ItemAttributes.TradeInValue.FormattedPrice")
 
     if new_price or used_price or trade_in_price:
-        return new_price, used_price, trade_in_price
-
-    book[datetime.date.time()] = smart_price(new_price, used_price, trade_in)
+        books[book][str(date.today())] = smart_price(new_price, used_price, trade_in_price)
     # return Nonesting.Price.FormattedPrice
 
 def get_prices(books):
 	#iterates through document of book urls
-	for book in books:
-		get_amazon_product_meta(book)
-		time.sleep(1)
-		print(url)
-		print("\t" + str(price))
+    for book in books:
+        get_amazon_product_meta(books, book)
+        time.sleep(1)
 
 def main():
 	# newPrices = {}[href]
 	# usedPrices = {}
 	# tradeInPrices = {}
-	book_dicts = file_controls.load_from_file("addresses.dat")
+	book_dicts = file_controls.load_from_file("addresses_subset.dat")
 	get_prices(book_dicts)
-	# save_to_file(newPrices, "newPrices.dat")
-	# save_to_file(usedPrices, "usedPrices.dat")
-	# save_to_file(tradeInPrices, "tradeInPrices.dat")
+	file_controls.save_to_file(book_dicts, "newPrices.dat")
+
 
 if __name__ == '__main__':
 	main()

@@ -10,5 +10,8 @@ def load_from_file(fileName):
 
 def save_to_file(structure, fileName):
 	f = open(fileName, 'w')
-	json.dump(structure,f)
+	json.dump(structure,f, default=jdefault)
 	f.close()
+
+def jdefault(o):
+	return o.__dict__
