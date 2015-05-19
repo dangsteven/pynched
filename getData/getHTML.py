@@ -32,8 +32,6 @@ def getInfo(url, List):
 			if a.text and a.get('href') not in List:
 				List[a.text] = {"href":a.get('href'), "keywords":[],
 				"id":get_amazon_item_id(a.get('href'))}
-	print(List)
-	print('\n')
 
 def getPagesFromRefinementLinks(url, List):
 	source_code = requests.get(url)
@@ -50,12 +48,12 @@ def getPagesFromRefinementLinks(url, List):
 	return
 
 def getHTMLs(List): #will only run once. ever.
-	#url = "http://www.amazon.com/New-Used-Textbooks-Books"\
-	#"/b/ref=bhp_brws_txt_stor?ie=UTF8&node=465600&pf_rd_m"\
-	#"=ATVPDKIKX0DER&pf_rd_s=merchandised-search-leftnav&pf_rd_r"\
-	#"=08W1VWTWWBKQKYRF42A2&pf_rd_t=101&pf_rd_p=2079831362&pf_rd_i=283155"
+	url = "http://www.amazon.com/New-Used-Textbooks-Books"\
+	"/b/ref=bhp_brws_txt_stor?ie=UTF8&node=465600&pf_rd_m"\
+	"=ATVPDKIKX0DER&pf_rd_s=merchandised-search-leftnav&pf_rd_r"\
+	"=08W1VWTWWBKQKYRF42A2&pf_rd_t=101&pf_rd_p=2079831362&pf_rd_i=283155"
 	#tinier sample size:
-	url = "http://www.amazon.com/s/ref=lp_465600_nr_n_2?fst=as%3Aoff&rh=n%3A283155%2Cn%3A%212349030011%2Cn%3A465600%2Cn%3A468204&bbn=465600&ie=UTF8&qid=1431228922&rnid=465600"
+	#url = "http://www.amazon.com/s/ref=lp_465600_nr_n_2?fst=as%3Aoff&rh=n%3A283155%2Cn%3A%212349030011%2Cn%3A465600%2Cn%3A468204&bbn=465600&ie=UTF8&qid=1431228922&rnid=465600"
 	getPagesFromRefinementLinks(url,List)
 
 def main():

@@ -25,7 +25,6 @@ def get_amazon_product_meta(books,book):
     # item_id = get_amazon_item_id(url)
     # if not item_id:
     #     return None
-    print("hello")
     item_id = books[book]["id"]
 
     try:
@@ -57,7 +56,7 @@ def main():
 	# newPrices = {}[href]
 	# usedPrices = {}
 	# tradeInPrices = {}
-	book_dicts = file_controls.load_from_file("addresses_subset.dat")
+	book_dicts = file_controls.load_from_file("addresses.dat")
 	get_prices(book_dicts)
 	file_controls.save_to_file(book_dicts, "newPrices.dat")
 
