@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from amazon.api import AmazonAPI
 import time
 from credentials import *
-import file_controls
+import fileControls
 from datetime import date
 
 AMAZON_ACCESS_KEY = amazon_access_key
@@ -56,9 +56,9 @@ def main():
 	# newPrices = {}[href]
 	# usedPrices = {}
 	# tradeInPrices = {}
-	book_dicts = file_controls.load_from_file("addresses.dat")
+	book_dicts = fileControls.load_from_file("addresses.dat")
 	get_prices(book_dicts)
-	file_controls.save_to_file(book_dicts, "oldPrices.dat")
+	fileControls.save_to_file(book_dicts, "oldPrices.dat")
 
 
 if __name__ == '__main__':
