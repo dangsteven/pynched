@@ -1,5 +1,5 @@
 # getHTML.py is part of the Pynched package. getHTML is a web crawler designed specifically to browse Amazon's
-# textbook selection and will retrieve the HTMLs of the top books from each refined category and discipline.
+# textbook selection and will retrieve the HTMLs of the top books from each refinement category and discipline.
 
 import sys
 import requests
@@ -8,8 +8,9 @@ import json
 import fileControls
 import re
 
-asin_regex = r'/([A-Z0-9]{10})'
-isbn_regex = r'/([0-9]{10})'
+#regex comands for finding ASIN or ISBN
+asin_regex = r"/([A-Z0-9]{10})"
+isbn_regex = r"/([0-9]{10})"
 
 def getAmazonItemId(url):
     # return either ASIN or ISBN
@@ -23,6 +24,7 @@ def getAmazonItemId(url):
         return None
 
 def getKeywords(title, href):
+	#finds the keywords associated with a book, either from the title or its hierarchy.
 	words = []
 	uselessWords = ("and", "in", "or", "the", "of", "for", "a", "an", "to", "from", "with", "on", "in", "guide", "books")
 	source_code = requests.get(href)
@@ -40,32 +42,32 @@ def getKeywords(title, href):
 	return words
 
 def getInfo(url, List):
+	#for all the results on a page, create a dict describing each book, containing the book's url, any keywords, and its id (ASIN or ISBN).
 	source_code = requests.get(url)
 	plain_text = source_code.text 
 	soup = BeautifulSoup(plain_text)
 
-	for addresses in soup.find_all('li', {'class','s-result-item'}):
+	for addresses in soup.find_all("li", {"class","s-result-item"}):
 		for a in addresses.find_all(title=True):
-			if a.text and a.get('href') not in List:
-				List[a.text] = {"href":a.get('href'), "keywords":getKeywords(a.text, a.get('href')),
-				"id":getAmazonItemId(a.get('href'))}
-	print(List)
+			if a.text and a.get("href") not in List:
+				List[a.text] = {"href":a.get("href"), "keywords":getKeywords(a.text, a.get("href")),
+				"id":getAmazonItemId(a.get("href"))}
 
 def getPagesFromRefinementLinks(url, List):
+	#given a page with results and refinement links, run this code recursively on all the refinement links, and get the info for all the results.
 	source_code = requests.get(url)
 	plain_text = source_code.text 
 	soup = BeautifulSoup(plain_text)
 	c = 0
 	getInfo(url, List)
-	for link in soup.find_all('span', {'class', 'refinementLink'}):
+	print(List)
+	for link in soup.find_all("span", {"class", "refinementLink"}):
 		c += 1
-		href = link.parent.get('href')
+		href = link.parent.get("href")
 		getPagesFromRefinementLinks(href, List)
-	# if(c == 0):
-	# 	getInfo(url, List)
-	return
 
 def getHTMLs(List): #will only run once. ever.
+	#given a base url, get all the pages from the refinement links on the page.
 	# url = "http://www.amazon.com/New-Used-Textbooks-Books"\
 	# "/b/ref=bhp_brws_txt_stor?ie=UTF8&node=465600&pf_rd_m"\
 	# "=ATVPDKIKX0DER&pf_rd_s=merchandised-search-leftnav&pf_rd_r"\
@@ -75,9 +77,10 @@ def getHTMLs(List): #will only run once. ever.
 	getPagesFromRefinementLinks(url,List)
 
 def main():
+	#creation of bookDicts, a dictionary of textbooks found, gets the HTMLs and other appropriate data for the books, and saves the resulting dict to a file.
 	bookDicts = {}
 	getHTMLs(bookDicts)
 	fileControls.saveToFile(bookDicts, "addresses.dat")
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 	main()

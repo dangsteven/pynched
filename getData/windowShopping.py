@@ -1,4 +1,5 @@
 # #windowShopping will take all of the Amazon HTMLs from a data structure and will retrieve all of the used/new prices
+
 import requests
 from bs4 import BeautifulSoup
 from amazon.api import AmazonAPI
@@ -7,24 +8,22 @@ from credentials import *
 import fileControls
 from datetime import date
 
+#amazon credentials, from credentials file
 AMAZON_ACCESS_KEY = amazon_access_key
 AMAZON_SECRET_KEY = amazon_secret_key
 AMAZON_ASSOC_TAG = amazon_associate_tag
 
 class smartPrice():
+    #price object that holds the three different price points for a given book at a given time.
     def __init__ (self, newPrice, usedPrice, tradeIn):
         self.newPrice = newPrice
         self.usedPrice = usedPrice
         self.tradeIn = tradeIn
 
-
 def getAmazonProductMeta(books,book):
-    # the input URL is always of amazon
+    #finds the prices of a given book in the dict of books, and updates the book with a new dictionary entry, in the format of date:smartPrice.
     amazon = AmazonAPI(AMAZON_ACCESS_KEY, AMAZON_SECRET_KEY, AMAZON_ASSOC_TAG)
 
-    # item_id = get_amazon_item_id(url)
-    # if not item_id:
-    #     return None
     item_id = books[book]["id"]
 
     try:
@@ -35,31 +34,25 @@ def getAmazonProductMeta(books,book):
     except Exception:
     	return None
 
-    # product.price_and_currency returns in the form (price, currency)
-	# product_price = product.price_and_currency[0]
-
     newPrice = product._safe_get_element_text("OfferSummary.LowestNewPrice.FormattedPrice")
     usedPrice = product._safe_get_element_text("OfferSummary.LowestUsedPrice.FormattedPrice")
     tradeInPrice = product._safe_get_element_text("ItemAttributes.TradeInValue.FormattedPrice")
 
     if newPrice or usedPrice or tradeInPrice:
         books[book][str(date.today())] = smartPrice(newPrice, usedPrice, tradeInPrice)
-    # return Nonesting.Price.FormattedPrice
 
 def getPrices(books):
-	#iterates through document of book urls
+	#iterates through dict of books and updates price
     for book in books:
         getAmazonProductMeta(books, book)
         time.sleep(1)
 
 def main():
-	# newPrices = {}[href]
-	# usedPrices = {}
-	# tradeInPrices = {}
+    #loads dictionary of books from file, gets prices for all the books, updates each book's dict, and saves books dict back to file
 	bookDicts = fileControls.loadFromFile("addresses.dat")
 	getPrices(bookDicts)
 	fileControls.saveToFile(bookDicts, "oldPrices.dat")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
 	main()
