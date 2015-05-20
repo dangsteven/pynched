@@ -11,7 +11,7 @@ import re
 asin_regex = r'/([A-Z0-9]{10})'
 isbn_regex = r'/([0-9]{10})'
 
-def get_amazon_item_id(url):
+def getAmazonItemId(url):
     # return either ASIN or ISBN
     asin_search = re.search(asin_regex, url)
     isbn_search = re.search(isbn_regex, url)
@@ -48,7 +48,7 @@ def getInfo(url, List):
 		for a in addresses.find_all(title=True):
 			if a.text and a.get('href') not in List:
 				List[a.text] = {"href":a.get('href'), "keywords":getKeywords(a.text, a.get('href')),
-				"id":get_amazon_item_id(a.get('href'))}
+				"id":getAmazonItemId(a.get('href'))}
 	print(List)
 
 def getPagesFromRefinementLinks(url, List):
@@ -75,9 +75,9 @@ def getHTMLs(List): #will only run once. ever.
 	getPagesFromRefinementLinks(url,List)
 
 def main():
-	book_dicts = {}
-	getHTMLs(book_dicts)
-	fileControls.save_to_file(book_dicts, "addresses.dat")
+	bookDicts = {}
+	getHTMLs(bookDicts)
+	fileControls.saveToFile(bookDicts, "addresses.dat")
 
 if __name__ == '__main__':
 	main()

@@ -2,13 +2,13 @@
 
 import json
 
-def load_from_file(fileName):
+def loadFromFile(fileName):
 	f = open(fileName, 'r')
 	data = json.load(f)
 	f.close()
 	return data
 
-def save_to_file(structure, fileName):
+def saveToFile(structure, fileName):
 	f = open(fileName, 'w')
 	json.dump(structure,f, default=jdefault)
 	f.close()

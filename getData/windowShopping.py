@@ -11,14 +11,14 @@ AMAZON_ACCESS_KEY = amazon_access_key
 AMAZON_SECRET_KEY = amazon_secret_key
 AMAZON_ASSOC_TAG = amazon_associate_tag
 
-class smart_price():
-    def __init__ (self, new_price, used_price, trade_in):
-        self.new_price = new_price
-        self.used_price = used_price
-        self.trade_in = trade_in
+class smartPrice():
+    def __init__ (self, newPrice, usedPrice, tradeIn):
+        self.newPrice = newPrice
+        self.usedPrice = usedPrice
+        self.tradeIn = tradeIn
 
 
-def get_amazon_product_meta(books,book):
+def getAmazonProductMeta(books,book):
     # the input URL is always of amazon
     amazon = AmazonAPI(AMAZON_ACCESS_KEY, AMAZON_SECRET_KEY, AMAZON_ASSOC_TAG)
 
@@ -38,27 +38,27 @@ def get_amazon_product_meta(books,book):
     # product.price_and_currency returns in the form (price, currency)
 	# product_price = product.price_and_currency[0]
 
-    new_price = product._safe_get_element_text("OfferSummary.LowestNewPrice.FormattedPrice")
-    used_price = product._safe_get_element_text("OfferSummary.LowestUsedPrice.FormattedPrice")
-    trade_in_price = product._safe_get_element_text("ItemAttributes.TradeInValue.FormattedPrice")
+    newPrice = product._safe_get_element_text("OfferSummary.LowestNewPrice.FormattedPrice")
+    usedPrice = product._safe_get_element_text("OfferSummary.LowestUsedPrice.FormattedPrice")
+    tradeInPrice = product._safe_get_element_text("ItemAttributes.TradeInValue.FormattedPrice")
 
-    if new_price or used_price or trade_in_price:
-        books[book][str(date.today())] = smart_price(new_price, used_price, trade_in_price)
+    if newPrice or usedPrice or tradeInPrice:
+        books[book][str(date.today())] = smartPrice(newPrice, usedPrice, tradeInPrice)
     # return Nonesting.Price.FormattedPrice
 
-def get_prices(books):
+def getPrices(books):
 	#iterates through document of book urls
     for book in books:
-        get_amazon_product_meta(books, book)
+        getAmazonProductMeta(books, book)
         time.sleep(1)
 
 def main():
 	# newPrices = {}[href]
 	# usedPrices = {}
 	# tradeInPrices = {}
-	book_dicts = fileControls.load_from_file("addresses.dat")
-	get_prices(book_dicts)
-	fileControls.save_to_file(book_dicts, "oldPrices.dat")
+	bookDicts = fileControls.loadFromFile("addresses.dat")
+	getPrices(bookDicts)
+	fileControls.saveToFile(bookDicts, "oldPrices.dat")
 
 
 if __name__ == '__main__':
