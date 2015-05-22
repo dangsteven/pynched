@@ -244,9 +244,19 @@ ul.alert-dropdown {
 
 /*Description Templates for About Us*/
 .Team-Members img{
-    height:300px;
-    width:500px;
-    margin:10px;
+    height:40%;
+    width:40%;
+}
+
+.Elizabeth img{
+    margin:5px 0px 35px 10px;
+}
+.Steven img{
+    margin:5px 10px 20px 0px;
+}
+
+em{
+    font-family: Arial;
 }
 
 p{
@@ -256,7 +266,13 @@ p{
 }
 
 .description{
-    text-align: justify;
+    text-align: center;
+    clear:both;
+
+}
+
+.about-us a{
+    color:#008A73;
 }
 
 .Elizabeth .Name{
