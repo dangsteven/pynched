@@ -1,6 +1,7 @@
 #helper file with useful file related functions
-
 import json
+import requests
+from bs4 import BeautifulSoup
 
 def loadFromFile(fileName):
 	#loads data from a file and returns said data
@@ -18,3 +19,9 @@ def saveToFile(structure, fileName):
 def jdefault(o):
 	#needed to save objects (makes objects writable, even if unwritable by default)
 	return o.__dict__
+
+def makeSoup(href):
+	source_code = requests.get(href)
+	plain_text = source_code.text
+	soup = BeautifulSoup(plain_text)
+	return soup
