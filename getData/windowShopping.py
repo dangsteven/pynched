@@ -1,12 +1,9 @@
 # #windowShopping will take all of the Amazon HTMLs from a data structure and will retrieve all of the used/new prices
-
-import requests
-from bs4 import BeautifulSoup
-from amazon.api import AmazonAPI
 import time
-from credentials import *
-import fileControls
 from datetime import date
+from credentials import *
+from amazon.api import AmazonAPI
+from fileControls import loadFromFile, saveToFile
 
 #amazon credentials, from credentials file
 AMAZON_ACCESS_KEY = amazon_access_key
@@ -49,9 +46,9 @@ def getPrices(books):
 
 def main():
     #loads dictionary of books from file, gets prices for all the books, updates each book's dict, and saves books dict back to file
-	bookDicts = fileControls.loadFromFile("addresses.dat")
+	bookDicts = loadFromFile("addresses.dat")
 	getPrices(bookDicts)
-	fileControls.saveToFile(bookDicts, "oldPrices.dat")
+	saveToFile(bookDicts, "oldPrices.dat")
 
 
 if __name__ == "__main__":
