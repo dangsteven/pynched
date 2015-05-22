@@ -1,26 +1,22 @@
-# [Start Bootstrap](http://startbootstrap.com/) - [SB Admin](http://startbootstrap.com/template-overviews/sb-admin/)
+# [pynched](http://pynched.com/)
 
-[SB Admin](http://startbootstrap.com/template-overviews/sb-admin/) is an open source, admin dashboard template for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/).
+[pynched](http://pynched.com/) is an open source project tracking and publishing amazon textbook prices over time. 
 
-## Getting Started
+## The Code
 
-To use this template, choose one of the following options to get started:
-* Download the latest release on Start Bootstrap
-* Fork this repository on GitHub
+pynched uses two main files for its data: getHTMLs.py and windowShopping.py (both in the getData folder). 
+[getHTMLs] retrieves all the data needed to scrape the site for price info. It is (ideally) only run once, at the beginning of the data collection.
+[windowShopping] is run daily. It uses the identification material collected in getHTMLs to find the new, used, and trade-in prices and catalog them.
 
-## Bugs and Issues
+<!-- ## Bugs and Issues
 
-Have a bug or an issue with this template? [Open a new issue](https://github.com/IronSummitMedia/startbootstrap-sb-admin/issues) here on GitHub or leave a comment on the [template overview page at Start Bootstrap](http://startbootstrap.com/template-overviews/sb-admin/).
+Have a bug or an issue with this template? Let us know! [Open a new issue](https://github.com/IronSummitMedia/startbootstrap-sb-admin/issues) here on GitHub or leave a comment on the [template overview page at Start Bootstrap](http://startbootstrap.com/template-overviews/sb-admin/). -->
 
-## Creator
+## Creators
 
-Start Bootstrap was created by and is maintained by **David Miller**, Managing Parter at [Iron Summit Media Strategies](http://www.ironsummitmedia.com/).
+pynched was created by and is maintained by **Steven Dang** and **Liz Furlan**.
 
-* https://twitter.com/davidmillerskt
-* https://github.com/davidtmiller
+* https://github.com/silkypanda
+* https://github.com/eafurlan
 
-Start Bootstrap is based on the [Bootstrap](http://getbootstrap.com/) framework created by [Mark Otto](https://twitter.com/mdo) and [Jacob Thorton](https://twitter.com/fat).
-
-## Copyright and License
-
-Copyright 2013-2015 Iron Summit Media Strategies, LLC. Code released under the [Apache 2.0](https://github.com/IronSummitMedia/startbootstrap-sb-admin/blob/gh-pages/LICENSE) license.
+We used and would like to thank: TheNewBoston's beautiful soup tutorial, beautiful soup itself, bootstrap, the amazon product api, the amazon simple api project (https://github.com/yoavaviram/python-amazon-simple-product-api), and avi on stack overflow (http://codereview.stackexchange.com/questions/56554/python-script-which-fetches-amazon-product-details-using-its-api).
