@@ -249,10 +249,14 @@ ul.alert-dropdown {
     margin:10px;
 }
 
-.Team-Members p{
+p{
     text-align: justify;
     font-size:1.4em;
     font-family:Arial;
+}
+
+.description{
+    text-align: justify;
 }
 
 .Elizabeth .Name{
@@ -270,7 +274,6 @@ ul.alert-dropdown {
     padding:10px;
     margin-top:15px;
     margin-bottom:10px;
-
 }
 .button{
     color:#008A73;
