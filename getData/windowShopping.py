@@ -48,7 +48,7 @@ def main():
     #loads dictionary of books from file, gets prices for all the books, updates each book's dict, and saves books dict back to file
 	bookDicts = loadFromFile("addresses.dat")
 	getPrices(bookDicts)
-	saveToFile(bookDicts, "oldPrices.dat")
+	saveToFile(bookDicts, "prices.dat")
 
 
 if __name__ == "__main__":
