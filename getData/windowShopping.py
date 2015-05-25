@@ -1,4 +1,5 @@
 # #windowShopping will take all of the Amazon HTMLs from a data structure and will retrieve all of the used/new prices
+import os
 import time
 from datetime import date
 from credentials import *
@@ -44,11 +45,21 @@ def getPrices(books):
         getAmazonProductMeta(books, book)
         time.sleep(1)
 
+def saveToGit():
+    try:
+        os.system("git add prices.dat")
+        os.system('git commit -m "prices.dat update on %s"' % str(date.today()))
+        os.system("git push")
+    except BaseException:
+        os.system("echo oh well.")
+
 def main():
     #loads dictionary of books from file, gets prices for all the books, updates each book's dict, and saves books dict back to file
-	bookDicts = loadFromFile("addresses.dat")
-	getPrices(bookDicts)
-	saveToFile(bookDicts, "prices.dat")
+	
+    bookDicts = loadFromFile("prices.dat")
+    getPrices(bookDicts)
+    saveToFile(bookDicts, "prices.dat")
+    saveToGit()
 
 
 if __name__ == "__main__":
